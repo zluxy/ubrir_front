@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: stocktaking
+  description: Описание API для работы с техникой
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /technique/{$uuid}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/TechniqueUUID'
+      description: Получение информации о конкретной техники и к кому она сейчас привязана
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Technique'
+  /technique:
+    post:
+      description: Занести устройство в систему
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Technique'
+      responses:
+        200:
+          description: OK
+
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Technique'
+      description: Обновить технику
+      responses:
+        200:
+          description: OK
+
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/TechniqueUUID'
+      description: Удалить устройство с контретным UUID
+      responses:
+        200:
+          description: OK
+
+  /technique/all:
+    get:
+      description: Получение информации о всей техники в реестре
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Technique'
+
+components:
+  schemas:
+    Technique:
+      type: object
+      properties:
+        identifier:
+          type: string
+        worker:
+          type: string
+          format: uuid
+        office:
+          type: string
+          format: uuid
+        workplace:
+          type: string
+          format: uuid
+        warehouse:
+          type: string
+          format: uuid
+      required:
+        - identifier
+
+  parameters:
+    TechniqueUUID:
+      in: path
+      name: uuid
+      required: true
+      schema:
+        type: string
+        format: uuid

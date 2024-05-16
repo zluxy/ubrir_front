@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: stocktaking
+  description: Описание API для работы со складами
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /warehouse:
+    get:
+      description: Получение всех пользоватлей хранящихся в сервисе
+      responses:
+        200:
+          description: Получение всех пользователей в системе
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Warehouse'
+  /warehouse/{$uuid}:
+    get:
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      description: Получение информации о конкретном складе
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Warehouse'
+
+components:
+  schemas:
+    Warehouse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        city:
+          type: string
+      required:
+        - uuid
+        - name
+        - city

@@ -1,0 +1,56 @@
+openapi: 3.0.3
+info:
+  title: stocktaking
+  description: Описание API для работы с рабочими местами
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /workplace/all:
+    get:
+      description: Получение всех пользоватлей хранящихся в сервисе
+      responses:
+        200:
+          description: Получение всех пользователей в системе
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Workplace'
+  /workplace/{$uuid}:
+    get:
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      description: Получение информации о конкретном рабочем месте
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workplace'
+
+
+components:
+  schemas:
+    Workplace:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        number:
+          type: string
+        worker:
+          type: string
+          format: uuid
+      required:
+        - uuid
+        - number
+        - worker
